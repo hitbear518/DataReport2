@@ -1,13 +1,6 @@
 # Built application files
-*.apk
 # Files for the Dalvik VM
-*.dex
-
-
 # Java class files
-*.class
-
-
 # Generated files
 bin/
 gen/
@@ -26,10 +19,7 @@ proguard/
 
 
 # Log Files
-*.log
-
-/.idea/workspace.xml
-/.idea/libraries
+/.idea
 .DS_Store
 /captures
 
