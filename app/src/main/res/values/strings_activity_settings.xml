@@ -1,0 +1,4 @@
+<resources>
+    <string name="pref_key_host">com.zsxj.datareport2.PREF_KEY_HOST</string>
+
+</resources>

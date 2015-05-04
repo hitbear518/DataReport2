@@ -15,4 +15,14 @@
     <style name="Root.NoList">
         <item name="android:padding">@dimen/root_margin</item>
     </style>
+
+    <style name="RaisedButton" parent="android:TextAppearance.Small">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RaisedButton.Horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/margin_medium</item>
+    </style>
 </resources>

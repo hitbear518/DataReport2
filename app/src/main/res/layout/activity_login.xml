@@ -7,14 +7,36 @@
     <include layout="@layout/tool_bar" />
 
     <ScrollView
+        android:id="@+id/login_form"
         style="@style/Root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            
-            style="@style/Root.NoList">
+            style="@style/Root.NoList"
+            android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/sid_field"
+                style="@style/AccountField"
+                android:hint="@string/hint_sid" />
+
+            <EditText
+                android:id="@+id/username_field"
+                style="@style/AccountField"
+                android:hint="@string/hint_username" />
+
+            <EditText
+                android:id="@+id/password_field"
+                style="@style/PasswordField"
+                android:hint="@string/hint_password" />
+
+            <Button
+                android:id="@+id/sign_in_button"
+                style="@style/RaisedButton.Horizontal"
+                android:text="@string/button_sign_in" />
         </LinearLayout>
     </ScrollView>
+
+    <include layout="@layout/progress" />
 </LinearLayout>
