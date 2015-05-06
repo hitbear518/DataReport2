@@ -10,6 +10,8 @@ import com.zsxj.datareport2.network.TestInterface;
 import com.zsxj.datareport2.network.TestSingleton;
 
 import org.joda.time.LocalDateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,14 +33,16 @@ public class TestActivity extends AppCompatActivity {
 
 		TestInterface testInterface = TestSingleton.getInterface(this);
 		Map<String, String> params = new HashMap<>();
-		LocalDateTime now = new LocalDateTime();
-		LocalDateTime weekAgo = now.minusWeeks(1);
+		DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
+		LocalDateTime now = fmt.parseLocalDateTime("2015-04-01 00:00:00");
+		LocalDateTime start = now.minusMonths(1);
 		Logger.d("now: " + now.toString("YYYY-MM-dd HH:mm:ss"));
-		Logger.d("weekAge: " + weekAgo.toString("YYYY-MM-dd HH:mm:ss"));
-		params.put("start_time", weekAgo.toString("YYYY-MM-dd HH:mm:ss"));
+		Logger.d("start: " + start.toString("YYYY-MM-dd HH:mm:ss"));
+		params.put("start_time", start.toString("YYYY-MM-dd HH:mm:ss"));
 		params.put("end_time", now.toString("YYYY-MM-dd HH:mm:ss"));
-		params.put("type", "1");
+//		params.put("type", "2");
 
-		testInterface.testSalesSell(params, callback);
+//		testInterface.testSalesSell(params, callback);
+		testInterface.testSalesProfit(params, callback);
 	}
 }

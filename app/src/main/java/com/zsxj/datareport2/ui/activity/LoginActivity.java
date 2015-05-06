@@ -239,7 +239,6 @@ public class LoginActivity extends HttpSubscriberActivity {
 			PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
 		}
 
-
 		// Save user login data;
 		mLoginPrefs.edit()
 			.sid().put(sid)
@@ -247,10 +246,10 @@ public class LoginActivity extends HttpSubscriberActivity {
 			.lastLogin().put(sid + ":" + username)
 			.apply();
 
-		gotoMain();
+		gotoTest();
 	}
 
-	private void gotoMain() {
+	private void gotoTest() {
 		Intent intent = new Intent(this, TestActivity.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

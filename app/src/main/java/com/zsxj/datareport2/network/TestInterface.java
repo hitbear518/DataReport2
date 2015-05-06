@@ -39,4 +39,7 @@ public interface TestInterface {
 
 	@POST("/mobile/stat_sales_sell_query.php")
 	public void testSalesSell(@QueryMap Map<String, String> params, Callback<String> callback);
+
+	@POST("/mobile/stat_sales_profit_report_query.php")
+	public void testSalesProfit(@QueryMap Map<String, String> params, Callback<String> callback);
 }
