@@ -83,7 +83,7 @@ public class LoginActivity extends HttpSubscriberActivity {
 		String sid = mLoginPrefs.sid().get();
 		String username = mLoginPrefs.username().get();
 		if (!TextUtils.isEmpty(sid)) mSidField.setText(sid);
-		if (!TextUtils.isEmpty(username)) mSidField.setText(sid);
+		if (!TextUtils.isEmpty(username)) mUsernameField.setText(username);
 	}
 
 	@EditorAction(R.id.password_field)

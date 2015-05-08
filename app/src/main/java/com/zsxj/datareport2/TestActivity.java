@@ -40,9 +40,9 @@ public class TestActivity extends AppCompatActivity {
 		Logger.d("start: " + start.toString("YYYY-MM-dd HH:mm:ss"));
 		params.put("start_time", start.toString("YYYY-MM-dd HH:mm:ss"));
 		params.put("end_time", now.toString("YYYY-MM-dd HH:mm:ss"));
-//		params.put("type", "2");
+		params.put("type", "2");
 
-//		testInterface.testSalesSell(params, callback);
-		testInterface.testSalesProfit(params, callback);
+		testInterface.testSalesSell(params, callback);
+//		testInterface.testSalesProfit(params, callback);
 	}
 }
