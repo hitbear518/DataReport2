@@ -34,12 +34,12 @@ public class TestActivity extends AppCompatActivity {
 		TestInterface testInterface = TestSingleton.getInterface(this);
 		Map<String, String> params = new HashMap<>();
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm:ss");
-		LocalDateTime now = fmt.parseLocalDateTime("2015-04-01 00:00:00");
-		LocalDateTime start = now.minusMonths(1);
-		Logger.d("now: " + now.toString("YYYY-MM-dd HH:mm:ss"));
+		LocalDateTime end = fmt.parseLocalDateTime("2015-04-01 00:00:00");
+		LocalDateTime start = end.minusMonths(1);
+		Logger.d("end: " + end.toString("YYYY-MM-dd HH:mm:ss"));
 		Logger.d("start: " + start.toString("YYYY-MM-dd HH:mm:ss"));
 		params.put("start_time", start.toString("YYYY-MM-dd HH:mm:ss"));
-		params.put("end_time", now.toString("YYYY-MM-dd HH:mm:ss"));
+		params.put("end_time", end.toString("YYYY-MM-dd HH:mm:ss"));
 		params.put("type", "2");
 
 		testInterface.testSalesSell(params, callback);

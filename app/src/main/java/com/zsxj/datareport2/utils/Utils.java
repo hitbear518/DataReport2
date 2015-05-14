@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
 public class Utils {
 
 	/**
-	 * Util method for show progress bar.
+	 * Util method for show include_progress bar.
 	 *
 	 * @param contentView  Content view
 	 * @param progressView ProgressBar
@@ -153,4 +155,11 @@ public class Utils {
 	public static String toString(InputStream in) throws IOException {
 		return toString(in, null);
 	}
+
+	public static String toJson(Object object) {
+		Gson gson = new Gson();
+		return gson.toJson(object);
+	}
+
+	public static final String DATE_PATTERN = "YYYY-MM-dd";
 }

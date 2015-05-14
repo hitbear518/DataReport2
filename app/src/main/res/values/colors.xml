@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="drawer_item_selected_background">#FEEE</color>
+    <color name="white">#FFFFFF</color>
+    <color name="drawer_item_tint_color">#FF333333</color>
+</resources>

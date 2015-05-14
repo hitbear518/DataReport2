@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="prompt_press_back_again_to_exit">再次按返回键以退出</string>
+    <string name="open_drawer_menu">打开抽屉菜单</string>
+    <string name="close_drawer_menu">关闭抽屉菜单</string>
+</resources>

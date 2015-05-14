@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_day_sales">日统计</string>
+    <string name="title_month_sales">月统计</string>
+</resources>
