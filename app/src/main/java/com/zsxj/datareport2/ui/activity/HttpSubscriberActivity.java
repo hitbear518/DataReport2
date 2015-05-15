@@ -30,7 +30,7 @@ public class HttpSubscriberActivity extends AppCompatActivity {
 		EventBus.getDefault().removeStickyEvent(httpResult);
 	}
 
-	public void onEvent(HttpErrorEvent httpErrorEvent) {
+	public void onEventMainThread(HttpErrorEvent httpErrorEvent) {
 		EventBus.getDefault().removeStickyEvent(httpErrorEvent);
 		Toast.makeText(getApplicationContext(), httpErrorEvent.errMsg, Toast.LENGTH_LONG).show();
 	}

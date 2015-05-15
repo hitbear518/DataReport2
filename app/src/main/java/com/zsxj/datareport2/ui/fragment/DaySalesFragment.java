@@ -22,12 +22,13 @@ import com.zsxj.datareport2.event.SelectStartDateEvent;
 import com.zsxj.datareport2.model.DaySalesResult;
 import com.zsxj.datareport2.model.Warehouse;
 import com.zsxj.datareport2.network.RequestHelper;
-import com.zsxj.datareport2.network.ServerInterface;
+import com.zsxj.datareport2.network.PdaInterface;
 import com.zsxj.datareport2.ui.adapter.SalesAdapter;
 import com.zsxj.datareport2.ui.widget.DividerItemDecoration;
 import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.InstanceState;
@@ -69,6 +70,9 @@ public class DaySalesFragment extends BaseFragment {
     @OptionsMenuItem(R.id.action_select_warehouses)
     MenuItem mSelectWarehouseMenuItem;
 
+    @Bean
+    RequestHelper mRequestHelper;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +85,7 @@ public class DaySalesFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.setHasFixedSize(true);
         mFab.attachToRecyclerView(mRecyclerView);
 
         if (mStartDate == null) {
@@ -93,7 +98,7 @@ public class DaySalesFragment extends BaseFragment {
         mEndDateButton.setText(mEndDate);
 
         if (mResult == null) {
-            RequestHelper.getInstance(getActivity()).queryDaySales(mStartDate, mEndDate);
+            mRequestHelper.queryDaySales(mStartDate, mEndDate);
         } else {
             setList();
         }
@@ -141,13 +146,13 @@ public class DaySalesFragment extends BaseFragment {
 
     @Click(R.id.fab)
     void fabClicked() {
-        RequestHelper.getInstance(getActivity()).queryDaySales(mStartDate, mEndDate);
+       mRequestHelper.queryDaySales(mStartDate, mEndDate);
     }
 
     @OptionsItem(R.id.action_select_warehouses)
     void selectWarehouses() {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String warehousesStr = prefs.getString(ServerInterface.WAREHOUSES, null);
+        String warehousesStr = prefs.getString(PdaInterface.WAREHOUSES, null);
         Gson gson = new Gson();
         final List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
         }.getType());
@@ -175,7 +180,7 @@ public class DaySalesFragment extends BaseFragment {
                         }
 
                         mSelectWarehouseMenuItem.setTitle("仓库(" + count + ")");
-                        prefs.edit().putString(ServerInterface.WAREHOUSES, Utils.toJson(warehouses)).apply();
+                        prefs.edit().putString(PdaInterface.WAREHOUSES, Utils.toJson(warehouses)).apply();
 
                     }
                 });

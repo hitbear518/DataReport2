@@ -16,22 +16,21 @@ import retrofit.http.QueryMap;
  * Last modified:
  * By:
  */
-public interface ServerInterface {
-	public static final String WAREHOUSES = "warehouse_no";
-	public static final String SPEC_NO = "spec_no";
-	public static final String BARCODE = "barcode";
-	public static final String TRANSFER_INFO = "transfer_info";
-	public static final String TRANSFER_DETAIL_INFO = "transfer_detail_info";
-	public static final String POSITION_NO = "position_no";
+public interface PdaInterface {
+	public static final String SID = "sid";
+	public static final String USERNAME = "nick";
+	public static final String TIMESTAMP = "timestamp";
+	public static final String SIGN = "sign";
+	public static final String WAREHOUSES = "warehouses";
 
 	@POST("/mobile/prepare.php")
-	void getLicense(HttpCallback<LicenseResult> callback);
+	void queryLicense(HttpCallback<LicenseResult> callback);
 
 	@POST("/mobile/login.php")
 	void login(@QueryMap Map<String, String> params, HttpCallback<LoginResult> callback);
 
 	@POST("/mobile/warehouse.php?mine=1")
-	void getWarehouses(HttpCallback<WarehouseResult> callback);
+	void queryWarehouses(HttpCallback<WarehouseResult> callback);
 
 	@POST("/mobile/stat_sales_sell_query.php?type=1")
 	public void queryDaySales(@QueryMap Map<String, String> params, HttpCallback<DaySalesResult> callback);

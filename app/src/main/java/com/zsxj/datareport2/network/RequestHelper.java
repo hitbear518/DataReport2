@@ -1,17 +1,19 @@
 package com.zsxj.datareport2.network;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.zsxj.datareport2.model.DaySalesResult;
+import com.zsxj.datareport2.model.LicenseResult;
+import com.zsxj.datareport2.model.LoginResult;
 import com.zsxj.datareport2.model.MonthSaleResult;
 import com.zsxj.datareport2.model.Warehouse;
+import com.zsxj.datareport2.model.WarehouseResult;
+import com.zsxj.datareport2.utils.DefaultPrefs_;
 import com.zsxj.datareport2.utils.Utils;
 
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -25,29 +27,35 @@ import java.util.Map;
  * Created by sen on 15-5-11.
  * Last Modified by
  */
+@EBean(scope = EBean.Scope.Singleton)
 public class RequestHelper {
 
-    private static RequestHelper sInstance;
+    @Pref
+    DefaultPrefs_ mDefaultPrefs;
 
-    public static RequestHelper getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new RequestHelper(context);
-        }
-        return sInstance;
+    public void init(String host) {
+        PdaInterfaceHolder.init(host);
     }
 
-    private Context mContext;
-    private ServerInterface mServerInterface;
+    public void queryLicense() {
+        PdaInterfaceHolder.get().queryLicense(new HttpCallback<LicenseResult>());
+    }
 
-    public RequestHelper(Context context) {
-        mContext = context.getApplicationContext();
-        mServerInterface = ServerInterfaceSingleton.get(context);
+    public void login(String sid, String username, String timestamp, String sign) {
+        Map<String, String> params = new HashMap<>();
+        params.put(PdaInterface.SID, sid);
+        params.put(PdaInterface.USERNAME, username);
+        params.put(PdaInterface.TIMESTAMP, timestamp);
+        params.put(PdaInterface.SIGN, sign);
+        PdaInterfaceHolder.get().login(params, new HttpCallback<LoginResult>());
+    }
+
+    public void queryWarehouses() {
+        PdaInterfaceHolder.get().queryWarehouses(new HttpCallback<WarehouseResult>());
     }
 
     public void queryDaySales(String startDate, String endDate) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-
-        String warehousesStr = prefs.getString(ServerInterface.WAREHOUSES, null);
+        String warehousesStr = mDefaultPrefs.warehouses().get();
         Gson gson = new Gson();
         final List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
         }.getType());
@@ -62,7 +70,7 @@ public class RequestHelper {
         params.put("end_time", endDate);
         params.put("warehouse_no_list", Utils.toJson(nos));
         HttpCallback<DaySalesResult> httpCallback = new HttpCallback<>();
-        mServerInterface.queryDaySales(params, httpCallback);
+        PdaInterfaceHolder.get().queryDaySales(params, httpCallback);
     }
 
     public void queryMonthales() {
@@ -75,6 +83,6 @@ public class RequestHelper {
         params.put("start_time", start.toString("YYYY-MM-dd HH:mm:ss"));
         params.put("end_time", end.toString("YYYY-MM-dd HH:mm:ss"));
 
-        mServerInterface.queryMonthSales(params, new HttpCallback<MonthSaleResult>());
+        PdaInterfaceHolder.get().queryMonthSales(params, new HttpCallback<MonthSaleResult>());
     }
 }
