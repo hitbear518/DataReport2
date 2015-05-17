@@ -21,9 +21,9 @@ import org.androidannotations.annotations.ViewById;
 @EFragment(R.layout.fragment_month_sales)
 public class MonthSalesFragment extends BaseFragment {
 
-    @ViewById(R.id.start_time_button)
+    @ViewById(R.id.start_date_button)
     Button mStartTimeButton;
-    @ViewById(R.id.end_time_button)
+    @ViewById(R.id.end_date_button)
     Button mEndTimeButton;
     @ViewById(R.id.ultimate_recycler_view)
     UltimateRecyclerView mUltimateRecyclerView;
@@ -35,10 +35,10 @@ public class MonthSalesFragment extends BaseFragment {
         mUltimateRecyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
-    @Click(R.id.start_time_button)
+    @Click(R.id.start_date_button)
     void startTimeButtonClicked() {}
 
-    @Click(R.id.end_time_button)
+    @Click(R.id.end_date_button)
     void endTimeButtonClicked() {
 
     }

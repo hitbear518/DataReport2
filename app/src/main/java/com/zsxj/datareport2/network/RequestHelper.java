@@ -1,8 +1,7 @@
 package com.zsxj.datareport2.network;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
+import com.zsxj.datareport2.event.BeforeRequestEvent;
 import com.zsxj.datareport2.model.DaySalesResult;
 import com.zsxj.datareport2.model.LicenseResult;
 import com.zsxj.datareport2.model.LoginResult;
@@ -18,10 +17,11 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by sen on 15-5-11.
@@ -55,20 +55,18 @@ public class RequestHelper {
     }
 
     public void queryDaySales(String startDate, String endDate) {
+        EventBus.getDefault().post(new BeforeRequestEvent());
+
         String warehousesStr = mDefaultPrefs.warehouses().get();
-        Gson gson = new Gson();
-        final List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
-        }.getType());
-        List<String> nos = new ArrayList<>();
-        for (Warehouse warehouse : warehouses) {
-            if (warehouse.checked) {
-                nos.add(warehouse.warehouseNo);
-            }
-        }
+//        Gson gson = new Gson();
+//        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
+//        }.getType());
+        List<Warehouse> warehouses = Utils.<Warehouse>fromJson(warehousesStr);
+//        List<String> nos = warehouses.stream().filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.warehouseNo).collect(java.util.stream.Collectors.toList());
         Map<String, String> params = new HashMap<>();
         params.put("start_time", startDate);
         params.put("end_time", endDate);
-        params.put("warehouse_no_list", Utils.toJson(nos));
+//        params.put("warehouse_no_list", Utils.toJson(nos));
         HttpCallback<DaySalesResult> httpCallback = new HttpCallback<>();
         PdaInterfaceHolder.get().queryDaySales(params, httpCallback);
     }
