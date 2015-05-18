@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
@@ -24,6 +25,7 @@ import com.zsxj.datareport2.model.Warehouse;
 import com.zsxj.datareport2.network.PdaInterface;
 import com.zsxj.datareport2.network.RequestHelper;
 import com.zsxj.datareport2.ui.adapter.SalesAdapter;
+import com.zsxj.datareport2.ui.widget.DividerItemDecoration;
 import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -53,8 +55,8 @@ public class DaySalesFragment extends BaseFragment {
     Button mStartDateButton;
     @ViewById(R.id.end_date_button)
     Button mEndDateButton;
-//    @ViewById(R.id.recycler_view)
-//    RecyclerView mRecyclerView;
+    @ViewById(R.id.recycler_view)
+    RecyclerView mRecyclerView;
     @ViewById(R.id.fab)
     FloatingActionButton mFab;
 
@@ -84,11 +86,11 @@ public class DaySalesFragment extends BaseFragment {
     @AfterViews
     void init() {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-//        mRecyclerView.setLayoutManager(layoutManager);
-//        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-//        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
-//        mRecyclerView.setHasFixedSize(true);
-//        mFab.attachToRecyclerView(mRecyclerView);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mRecyclerView.setHasFixedSize(true);
+        mFab.attachToRecyclerView(mRecyclerView);
 
         if (mStartDate == null) {
             mStartDate = "2015-03-01";
@@ -131,7 +133,7 @@ public class DaySalesFragment extends BaseFragment {
 
     private void setList() {
         SalesAdapter salesAdapter = new SalesAdapter(mResult.stat_sales_sell_list);
-//        mRecyclerView.setAdapter(salesAdapter);
+        mRecyclerView.setAdapter(salesAdapter);
     }
 
     public void onEventMainThread(ReturnStartDateEvent event) {

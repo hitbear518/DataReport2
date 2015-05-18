@@ -15,7 +15,6 @@ public class Sales implements Parcelable {
     public String sales_date;
     public String shop_name;
     public String warehouse_name;
-    public String name;
     public int new_trades;
     public String new_trades_amount;
     public int check_trades;

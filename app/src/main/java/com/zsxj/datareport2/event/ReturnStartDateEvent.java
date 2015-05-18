@@ -6,7 +6,4 @@ package com.zsxj.datareport2.event;
  */
 public class ReturnStartDateEvent extends ReturnDateEvent {
 
-    public ReturnStartDateEvent(String date) {
-        super(date);
-    }
 }

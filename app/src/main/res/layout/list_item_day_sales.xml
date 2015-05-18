@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Root.ListItem"
+    android:orientation="horizontal">
+
+    <include
+        android:id="@+id/date_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/shop_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/warehouse_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/new_trades_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/new_trades_amount_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/check_trades_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/check_trades_amount_label"
+        layout="@layout/include_cell" />
+</LinearLayout>

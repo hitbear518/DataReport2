@@ -5,7 +5,10 @@ package com.zsxj.datareport2.event;
  * Last Modified by
  */
 public class ReturnEndDateEvent extends ReturnDateEvent {
-    public ReturnEndDateEvent(String date) {
-        super(date);
-    }
+	public ReturnEndDateEvent() {
+	}
+
+	public ReturnEndDateEvent(String date) {
+		super(date);
+	}
 }

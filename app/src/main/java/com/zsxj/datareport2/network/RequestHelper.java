@@ -1,5 +1,7 @@
 package com.zsxj.datareport2.network;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.zsxj.datareport2.event.BeforeRequestEvent;
 import com.zsxj.datareport2.model.DaySalesResult;
@@ -58,15 +60,14 @@ public class RequestHelper {
         EventBus.getDefault().post(new BeforeRequestEvent());
 
         String warehousesStr = mDefaultPrefs.warehouses().get();
-//        Gson gson = new Gson();
-//        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
-//        }.getType());
-        List<Warehouse> warehouses = Utils.<Warehouse>fromJson(warehousesStr);
+        Gson gson = new Gson();
+        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>(){}.getType());
 //        List<String> nos = warehouses.stream().filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.warehouseNo).collect(java.util.stream.Collectors.toList());
+        List<String> nos = Utils.collectCheckedWarehouseNos(warehouses);
         Map<String, String> params = new HashMap<>();
         params.put("start_time", startDate);
         params.put("end_time", endDate);
-//        params.put("warehouse_no_list", Utils.toJson(nos));
+        params.put("warehouse_no_list", Utils.toJson(nos));
         HttpCallback<DaySalesResult> httpCallback = new HttpCallback<>();
         PdaInterfaceHolder.get().queryDaySales(params, httpCallback);
     }

@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.zsxj.datareport2.R;
-import com.zsxj.datareport2.event.BeforeRequestEvent;
-import com.zsxj.datareport2.model.HttpResult;
 import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.EFragment;
@@ -35,14 +33,6 @@ public abstract class BaseFragment extends Fragment {
 	public void onPause() {
 		super.onPause();
 		EventBus.getDefault().unregister(this);
-	}
-
-	public void onEventMainThread(BeforeRequestEvent event) {
-
-	}
-
-	public void onEventMainThread(HttpResult result) {
-		showProgress(false);
 	}
 
 	protected void showProgress(boolean show) {

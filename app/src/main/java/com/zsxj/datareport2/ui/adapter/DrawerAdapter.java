@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.zsxj.datareport2.R;
 import com.zsxj.datareport2.ui.activity.MainActivity;
-import com.zsxj.datareport2.ui.fragment.DaySalesFragment_;
+import com.zsxj.datareport2.ui.fragment.DaySalesFragment2_;
 
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
@@ -37,7 +37,7 @@ public class DrawerAdapter extends BaseAdapter {
     public Object getItem(int position) {
         switch (position) {
         case 0:
-            return DaySalesFragment_.builder().build();
+            return DaySalesFragment2_.builder().build();
         default:
             return null;
         }
