@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 /**
  * Created by sen on 15-5-11.
@@ -61,9 +63,9 @@ public class RequestHelper {
 
         String warehousesStr = mDefaultPrefs.warehouses().get();
         Gson gson = new Gson();
-        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>(){}.getType());
-//        List<String> nos = warehouses.stream().filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.warehouseNo).collect(java.util.stream.Collectors.toList());
-        List<String> nos = Utils.collectCheckedWarehouseNos(warehouses);
+        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
+		}.getType());
+		List<String> nos = StreamSupport.stream(warehouses).filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.name).collect(Collectors.toList());
         Map<String, String> params = new HashMap<>();
         params.put("start_time", startDate);
         params.put("end_time", endDate);

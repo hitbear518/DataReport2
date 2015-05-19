@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.zsxj.datareport2.R;
+import com.zsxj.datareport2.model.HttpResult;
 import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.EFragment;
@@ -37,5 +38,9 @@ public abstract class BaseFragment extends Fragment {
 
 	protected void showProgress(boolean show) {
 		Utils.showProgress(mContentRootView, mProgressView, show);
+	}
+
+	public void onEvent(HttpResult result) {
+		EventBus.getDefault().removeStickyEvent(result);
 	}
 }

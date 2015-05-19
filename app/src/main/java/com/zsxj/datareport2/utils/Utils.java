@@ -177,6 +177,11 @@ public class Utils {
 		return nos;
 	}
 
+	public static <T> List<T> toList(String json, Class<T> clazz) {
+		Gson gson = new Gson();
+		return gson.fromJson(json, new ListOfJson<T>(clazz));
+	}
+
 	public static final String DATE_PATTERN = "YYYY-MM-dd";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);

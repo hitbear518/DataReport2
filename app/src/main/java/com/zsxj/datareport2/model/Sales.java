@@ -22,13 +22,13 @@ public class Sales implements Parcelable {
     public int send_trades;
     public String send_trades_amount;
     public String send_unknown_goods_amount;
+    public String send_goods_cost;
+    public String commission;
     public String send_trade_profit;
     public String post_amount;
     public String post_cost;
-    public String commission;
-    public String package_cost;
-    public String send_goods_cost;
     public String post_profit;
+    public String package_cost;
 
     @Override
     public int describeContents() {

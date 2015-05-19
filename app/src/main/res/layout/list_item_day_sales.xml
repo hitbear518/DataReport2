@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/Root.ListItem"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:layout_height="match_parent"
     android:orientation="horizontal">
-
-    <include
-        android:id="@+id/date_label"
-        layout="@layout/include_cell" />
 
     <include
         android:id="@+id/shop_label"
@@ -29,5 +27,45 @@
 
     <include
         android:id="@+id/check_trades_amount_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/send_trades_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/send_trades_amount_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/send_unknown_goods_amount_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/send_goods_cost_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/commission_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/send_trades_profit_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/post_amount_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/post_cost_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/post_profit_label"
+        layout="@layout/include_cell" />
+
+    <include
+        android:id="@+id/package_cost_label"
         layout="@layout/include_cell" />
 </LinearLayout>
