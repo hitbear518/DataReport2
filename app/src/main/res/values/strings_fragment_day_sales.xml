@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="warehouse">仓库</string>
-    <string name="shop_header">店铺</string>
+    <string name="shop">店铺</string>
     <string name="new_trades_header">新增订单数</string>
     <string name="new_trades_amount_header">新增订单金额</string>
     <string name="check_trades_header">审核订单数</string>
@@ -19,4 +19,7 @@
     <string name="date_header">日期</string>
 
     <string name="selected_warehouse_count_format">仓库（%1$d）</string>
+    <string name="action_select_warehouse">仓库</string>
+    <string name="action_select_shop">店铺</string>
+    <string name="selected_shop_count_format">店铺（%1$d）</string>
 </resources>

@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.zsxj.datareport2.R;
 import com.zsxj.datareport2.model.Sales;
+import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.EViewGroup;
 import org.androidannotations.annotations.ViewById;
@@ -46,6 +47,8 @@ public class DaySalesItemView extends LinearLayout {
 	TextView mPostCostLabel;
 	@ViewById(R.id.post_profit_label)
 	TextView mPostProfitLabel;
+	@ViewById(R.id.package_cost_label)
+	TextView mPackageCostLabel;
 
 	public DaySalesItemView(Context context) {
 		super(context);
@@ -55,17 +58,18 @@ public class DaySalesItemView extends LinearLayout {
 		mShopLabel.setText(sales.shop_name);
 		mWarehouseLabel.setText(sales.warehouse_name);
 		mNewTradesLabel.setText(String.valueOf(sales.new_trades));
-		mNewTradesAmountLabel.setText(sales.new_trades_amount);
+		mNewTradesAmountLabel.setText(Utils.removeTrailingZeros(sales.new_trades_amount));
 		mCheckTradesLabel.setText(String.valueOf(sales.check_trades));
-		mCheckTradesAmountLabel.setText(sales.check_trades_amount);
+		mCheckTradesAmountLabel.setText(Utils.removeTrailingZeros(sales.check_trades_amount));
 		mSendTradesLabel.setText(String.valueOf(sales.send_trades));
-		mSendTradesAmountLabel.setText(sales.send_trades_amount);
-		mSendUnknownGoodsAmount.setText(sales.send_unknown_goods_amount);
-		mSendGoodsCostLabel.setText(sales.send_goods_cost);
-		mCommissionLabel.setText(sales.commission);
-		mSendTradesProfitLabel.setText(sales.send_trade_profit);
-		mPostAmountLabel.setText(sales.post_amount);
-		mPostCostLabel.setText(sales.post_cost);
-		mPostProfitLabel.setText(sales.post_profit);
+		mSendTradesAmountLabel.setText(Utils.removeTrailingZeros(sales.send_trades_amount));
+		mSendUnknownGoodsAmount.setText(Utils.removeTrailingZeros(sales.send_unknown_goods_amount));
+		mSendGoodsCostLabel.setText(Utils.removeTrailingZeros(sales.send_goods_cost));
+		mCommissionLabel.setText(Utils.removeTrailingZeros(sales.commission));
+		mSendTradesProfitLabel.setText(Utils.removeTrailingZeros(sales.send_trade_profit));
+		mPostAmountLabel.setText(Utils.removeTrailingZeros(sales.post_amount));
+		mPostCostLabel.setText(Utils.removeTrailingZeros(sales.post_cost));
+		mPostProfitLabel.setText(Utils.removeTrailingZeros(sales.post_profit));
+		mPackageCostLabel.setText(Utils.removeTrailingZeros(sales.package_cost));
 	}
 }

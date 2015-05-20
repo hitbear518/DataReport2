@@ -15,6 +15,8 @@ import java.util.List;
 @ParcelablePlease
 public class DaySalesResult extends HttpResult implements Parcelable {
 
+    public int total_count;
+
     public List<Sales> stat_sales_sell_list = null;
 
     @Override

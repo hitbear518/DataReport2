@@ -1,4 +1,4 @@
-package com.zsxj.datareport2.ui.widget;
+package com.zsxj.datareport2.ui.adapter;
 
 import android.widget.BaseAdapter;
 

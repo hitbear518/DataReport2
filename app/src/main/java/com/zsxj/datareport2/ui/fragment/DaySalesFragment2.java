@@ -2,16 +2,20 @@ package com.zsxj.datareport2.ui.fragment;
 
 import android.annotation.SuppressLint;
 import android.support.v7.app.AlertDialog;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.common.primitives.Booleans;
 import com.melnykov.fab.FloatingActionButton;
 import com.zsxj.datareport2.R;
 import com.zsxj.datareport2.event.ReturnEndDateEvent;
 import com.zsxj.datareport2.event.ReturnStartDateEvent;
 import com.zsxj.datareport2.model.DaySalesResult;
+import com.zsxj.datareport2.model.Shop;
 import com.zsxj.datareport2.model.Warehouse;
 import com.zsxj.datareport2.network.RequestHelper;
 import com.zsxj.datareport2.ui.adapter.DateAdapter;
@@ -33,6 +37,7 @@ import org.joda.time.LocalDate;
 
 import java.util.List;
 
+import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
 /**
@@ -57,6 +62,8 @@ public class DaySalesFragment2 extends BaseFragment {
 	@Bean
 	RequestHelper mRequestHelper;
 
+	@OptionsMenuItem(R.id.action_select_shop)
+	MenuItem mSelectShopItem;
 	@OptionsMenuItem(R.id.action_select_warehouses)
 	MenuItem mSelectWarehouseMenuItem;
 
@@ -65,13 +72,24 @@ public class DaySalesFragment2 extends BaseFragment {
 
 	private DaySalesResult mResult;
 
+	private List<Shop> mShops;
+	private List<Warehouse> mWarehouses;
+
 	@AfterViews
 	void init() {
-		mStartDateButton.setText("2014-07-01");
-		mEndDateButton.setText("2014-09-01");
-		requestData();
+		String shopsStr = mDefaultPrefs.shops().get();
+		mShops = Utils.toList(shopsStr, Shop.class);
+		String warehouseStr = mDefaultPrefs.warehouses().get();
+		mWarehouses = Utils.toList(warehouseStr, Warehouse.class);
+		mStartDateButton.setText("14-07-01");
+		mEndDateButton.setText("14-09-01");
+		initRequest();
 
 		mDaySalesList.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+			private int previouseTotal;
+			private boolean loading;
+
 			@Override
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
@@ -79,33 +97,63 @@ public class DaySalesFragment2 extends BaseFragment {
 			@SuppressLint("NewApi")
 			@Override
 			public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-				if (view.getChildCount() > 0) {
+				if (totalItemCount > 0) {
 					mDateList.setSelectionFromTop(firstVisibleItem, view.getChildAt(0).getTop());
+
+					if (!loading && totalItemCount < mResult.total_count && totalItemCount - (firstVisibleItem + visibleItemCount) == 1) {
+						int pageNo = totalItemCount / RequestHelper.CURRENT_PAGE_SIZE;
+						showProgress(true);
+						previouseTotal = totalItemCount;
+						mRequestHelper.queryDaySales(mStartDateButton.getText().toString(), mEndDateButton.getText().toString(), pageNo);
+					}
 				}
 
 			}
 		});
-		mFab.attachToListView(mDaySalesList);
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+		updateSelectShopItemTitle();
+		updateSelectWarehouseItemTitle();
+	}
+
+	private void updateSelectShopItemTitle() {
+		long count = StreamSupport.stream(mShops).filter(shop -> shop.checked).count();
+		String title = count > 0 ? getString(R.string.selected_shop_count_format, count) : getString(R.string.shop);
+		mSelectShopItem.setTitle(title);
+	}
+
+	private void updateSelectWarehouseItemTitle() {
+		long count = StreamSupport.stream(mWarehouses).filter(w -> w.checked).count();
+		String title = count > 0 ? getString(R.string.selected_warehouse_count_format, count) : getString(R.string.warehouse);
+		mSelectWarehouseMenuItem.setTitle(title);
+	}
+
+	@OptionsItem(R.id.action_select_shop)
+	void selectShop() {
+		List<Boolean> listCheckedItem = StreamSupport.stream(mShops).map(shop -> shop.checked).collect(Collectors.toList());
+		boolean[] checkedItems = Booleans.toArray(listCheckedItem);
+		CharSequence[] items = StreamSupport.stream(mShops).map(shop -> shop.shop_name).toArray(size -> new CharSequence[size]);
+		new AlertDialog.Builder(getActivity()).setMultiChoiceItems(items, checkedItems, (dialog, which, isChecked) -> {
+			mShops.get(which).checked = isChecked;
+		}).setPositiveButton(android.R.string.ok, (dialog, which) -> {
+			updateSelectShopItemTitle();
+			mDefaultPrefs.shops().put(Utils.toJson(mShops));
+		}).show();
 	}
 
 	@OptionsItem(R.id.action_select_warehouses)
 	void selectionWarehouses() {
-		String warehousesStr = mDefaultPrefs.warehouses().get();
-		List<Warehouse> warehouses = Utils.toList(warehousesStr, Warehouse.class);
-		Boolean[] temp = StreamSupport.stream(warehouses).map(w -> w.checked).toArray(size -> new Boolean[size]);
-		boolean[] checkedItems = new boolean[temp.length];
-		for (int i = 0; i < temp.length; i++) {
-			checkedItems[i] = temp[i];
-		}
-		CharSequence[] names = StreamSupport.stream(warehouses).map(w -> w.name).toArray(size -> new CharSequence[size]);
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setMultiChoiceItems(names, checkedItems, (dialog, which, isChecked) -> {
-			warehouses.get(which).checked = isChecked;
+		List<Boolean> listCheckedItem = StreamSupport.stream(mWarehouses).map(w -> w.checked).collect(Collectors.toList());
+		boolean[] checkedItems = Booleans.toArray(listCheckedItem);
+		CharSequence[] names = StreamSupport.stream(mWarehouses).map(w -> w.name).toArray(size -> new CharSequence[size]);
+		new AlertDialog.Builder(getActivity()).setMultiChoiceItems(names, checkedItems, (dialog, which, isChecked) -> {
+			mWarehouses.get(which).checked = isChecked;
 		}).setPositiveButton(android.R.string.ok, (dialog, which) -> {
-			long count = StreamSupport.stream(warehouses).filter(w -> w.checked).count();
-			String title = count > 0 ? getString(R.string.selected_warehouse_count_format, count) : getString(R.string.warehouse);
-			mSelectWarehouseMenuItem.setTitle(title);
-			mDefaultPrefs.warehouses().put(Utils.toJson(warehouses));
+			updateSelectWarehouseItemTitle();
+			mDefaultPrefs.warehouses().put(Utils.toJson(mWarehouses));
 		}).show();
 	}
 
@@ -130,18 +178,29 @@ public class DaySalesFragment2 extends BaseFragment {
 	}
 
 	@Click(R.id.fab)
-	void requestData() {
+	void initRequest() {
+		mResult = null;
 		showProgress(true);
-		mRequestHelper.queryDaySales(mStartDateButton.getText().toString(), mEndDateButton.getText().toString());
+		mRequestHelper.queryDaySales(mStartDateButton.getText().toString(), mEndDateButton.getText().toString(), 0);
 	}
 
 
 	public void onEvent(DaySalesResult result) {
-		mResult = result;
-		fillList(mResult);
+		showProgress(false);
+		if (mResult == null) {
+			mResult = result;
+			initList(mResult);
+		} else {
+			mResult.stat_sales_sell_list.addAll(result.stat_sales_sell_list);
+			BaseAdapter adapter = (BaseAdapter) mDaySalesList.getAdapter();
+			adapter.notifyDataSetChanged();
+
+			adapter = (BaseAdapter) mDateList.getAdapter();
+			adapter.notifyDataSetChanged();
+		}
 	}
 
-	private void fillList(DaySalesResult result) {
+	private void initList(DaySalesResult result) {
 		showProgress(false);
 		mDateList.setAdapter(new DateAdapter(result.stat_sales_sell_list));
 		mDaySalesList.setAdapter(new DaySalesAdapter(result.stat_sales_sell_list));

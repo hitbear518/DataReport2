@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.zsxj.datareport2.R;
 import com.zsxj.datareport2.model.Sales;
-import com.zsxj.datareport2.ui.widget.BaseListAdapter;
+import com.zsxj.datareport2.utils.Utils;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public class DateAdapter extends BaseListAdapter<Sales> {
 			convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.include_cell, parent, false);
 		}
 		TextView dateLabel = (TextView) convertView;
-		dateLabel.setText(mData.get(position).sales_date);
+		dateLabel.setText(Utils.FORMATTER.parseLocalDate(mData.get(position).sales_date).toString(Utils.DATE_PATTERN));
 		return dateLabel;
 	}
 }

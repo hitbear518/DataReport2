@@ -102,7 +102,7 @@ public class DaySalesFragment extends BaseFragment {
         mEndDateButton.setText(mEndDate);
 
         if (mResult == null) {
-            mRequestHelper.queryDaySales(mStartDate, mEndDate);
+
         } else {
             setList();
         }
@@ -148,10 +148,6 @@ public class DaySalesFragment extends BaseFragment {
         mEndDateButton.setText(event.date);
     }
 
-    @Click(R.id.fab)
-    void fabClicked() {
-       mRequestHelper.queryDaySales(mStartDate, mEndDate);
-    }
 
     @OptionsItem(R.id.action_select_warehouses)
     void selectWarehouses() {

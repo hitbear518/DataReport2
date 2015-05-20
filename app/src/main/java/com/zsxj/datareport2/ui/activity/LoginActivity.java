@@ -20,6 +20,7 @@ import com.zsxj.datareport2.event.HttpErrorEvent;
 import com.zsxj.datareport2.model.IpResult;
 import com.zsxj.datareport2.model.LicenseResult;
 import com.zsxj.datareport2.model.LoginResult;
+import com.zsxj.datareport2.model.ShopResult;
 import com.zsxj.datareport2.model.WarehouseResult;
 import com.zsxj.datareport2.network.GetIpInterface;
 import com.zsxj.datareport2.network.HttpCallback;
@@ -217,17 +218,38 @@ public class LoginActivity extends HttpSubscriberActivity {
 			mDefaultPrefs.clear();
 		}
 
+		String shops = mDefaultPrefs.shops().get();
 		String warehouses = mDefaultPrefs.warehouses().get();
+		if (TextUtils.isEmpty(shops)) {
+			mRequestHelper.queryShops();
+		}
 		if (TextUtils.isEmpty(warehouses)) {
 			mRequestHelper.queryWarehouses();
-		} else {
+		}
+
+		if (!TextUtils.isEmpty(shops) && !TextUtils.isEmpty(warehouses)) {
 			gotoMain();
 		}
 	}
 
 	public void onEventMainThread(WarehouseResult result) {
 		mDefaultPrefs.warehouses().put(Utils.toJson(result.warehouses));
-		gotoMain();
+
+		String shops = mDefaultPrefs.shops().get();
+		String warehouses = mDefaultPrefs.warehouses().get();
+		if (!TextUtils.isEmpty(shops) && !TextUtils.isEmpty(warehouses)) {
+			gotoMain();
+		}
+	}
+
+	public void onEventMainThread(ShopResult result) {
+		mDefaultPrefs.shops().put(Utils.toJson(result.shoplist));
+
+		String shops = mDefaultPrefs.shops().get();
+		String warehouses = mDefaultPrefs.warehouses().get();
+		if (!TextUtils.isEmpty(shops) && !TextUtils.isEmpty(warehouses)) {
+			gotoMain();
+		}
 	}
 
 	private void gotoMain() {

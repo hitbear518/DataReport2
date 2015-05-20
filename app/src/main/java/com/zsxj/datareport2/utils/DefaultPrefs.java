@@ -7,5 +7,6 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
  */
 @SharedPref(value = SharedPref.Scope.APPLICATION_DEFAULT)
 public interface DefaultPrefs {
+	String shops();
 	String warehouses();
 }

@@ -5,7 +5,6 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 
 import com.google.gson.Gson;
-import com.zsxj.datareport2.model.Warehouse;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -18,7 +17,6 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -166,23 +164,16 @@ public class Utils {
 		Gson gson = new Gson();
 		return gson.toJson(object);
 	}
-
-	public static List<String> collectCheckedWarehouseNos(List<Warehouse> warehouses) {
-		List<String> nos = new ArrayList<>();
-		for (Warehouse warehouse : warehouses) {
-			if (warehouse.checked) {
-				nos.add(warehouse.warehouseNo);
-			}
-		}
-		return nos;
-	}
-
 	public static <T> List<T> toList(String json, Class<T> clazz) {
 		Gson gson = new Gson();
 		return gson.fromJson(json, new ListOfJson<T>(clazz));
 	}
 
-	public static final String DATE_PATTERN = "YYYY-MM-dd";
+	public static final String DATE_PATTERN = "YY-MM-dd";
 
 	public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);
+
+	public static String removeTrailingZeros(String s) {
+		return !s.contains(".") ? s :s.replaceAll("0*$", "").replaceAll("\\.$", "");
+	}
 }

@@ -3,7 +3,6 @@ package com.zsxj.datareport2.network;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
-import com.zsxj.datareport2.event.BeforeRequestEvent;
 import com.zsxj.datareport2.model.DaySalesResult;
 import com.zsxj.datareport2.model.LicenseResult;
 import com.zsxj.datareport2.model.LoginResult;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
 
@@ -33,6 +31,9 @@ import java8.util.stream.StreamSupport;
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class RequestHelper {
+
+	public static int sPageNo;
+	public static final int CURRENT_PAGE_SIZE = 14;
 
     @Pref
     DefaultPrefs_ mDefaultPrefs;
@@ -54,22 +55,26 @@ public class RequestHelper {
         PdaInterfaceHolder.get().login(params, new HttpCallback<LoginResult>());
     }
 
+    public void queryShops() {
+        PdaInterfaceHolder.get().queryShops(new HttpCallback<>());
+    }
+
     public void queryWarehouses() {
         PdaInterfaceHolder.get().queryWarehouses(new HttpCallback<WarehouseResult>());
     }
 
-    public void queryDaySales(String startDate, String endDate) {
-        EventBus.getDefault().post(new BeforeRequestEvent());
-
+    public void queryDaySales(String startDate, String endDate, int pageNo) {
         String warehousesStr = mDefaultPrefs.warehouses().get();
         Gson gson = new Gson();
         List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
 		}.getType());
 		List<String> nos = StreamSupport.stream(warehouses).filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.name).collect(Collectors.toList());
         Map<String, String> params = new HashMap<>();
-        params.put("start_time", startDate);
-        params.put("end_time", endDate);
-        params.put("warehouse_no_list", Utils.toJson(nos));
+        params.put(PdaInterface.START_TIME, startDate);
+        params.put(PdaInterface.END_TIME, endDate);
+        params.put(PdaInterface.WAREHOUSE_NO_LIST, Utils.toJson(nos));
+		params.put(PdaInterface.PAGE_NO, String.valueOf(pageNo));
+		params.put(PdaInterface.PAGE_SIZE, String.valueOf(CURRENT_PAGE_SIZE));
         HttpCallback<DaySalesResult> httpCallback = new HttpCallback<>();
         PdaInterfaceHolder.get().queryDaySales(params, httpCallback);
     }

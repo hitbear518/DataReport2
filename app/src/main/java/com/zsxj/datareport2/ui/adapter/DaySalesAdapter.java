@@ -4,7 +4,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zsxj.datareport2.model.Sales;
-import com.zsxj.datareport2.ui.widget.BaseListAdapter;
 import com.zsxj.datareport2.ui.widget.DaySalesItemView;
 import com.zsxj.datareport2.ui.widget.DaySalesItemView_;
 

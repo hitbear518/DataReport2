@@ -5,7 +5,6 @@ import android.view.View;
 
 import com.zsxj.datareport2.R;
 import com.zsxj.datareport2.model.HttpResult;
-import com.zsxj.datareport2.utils.Utils;
 
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
@@ -18,11 +17,14 @@ import de.greenrobot.event.EventBus;
 @EFragment
 public abstract class BaseFragment extends Fragment {
 
-	@ViewById(R.id.progress)
-	View mProgressView;
+//	@ViewById(R.id.progress)
+//	View mProgressView;
+//
+//	@ViewById(R.id.content_root)
+//	View mContentRootView;
 
-	@ViewById(R.id.content_root)
-	View mContentRootView;
+	@ViewById(R.id.progress_on_top)
+	View mProgressOnTop;
 
 	@Override
 	public void onResume() {
@@ -37,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	protected void showProgress(boolean show) {
-		Utils.showProgress(mContentRootView, mProgressView, show);
+		mProgressOnTop.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	public void onEvent(HttpResult result) {
