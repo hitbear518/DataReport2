@@ -19,6 +19,7 @@ import com.zsxj.datareport2.model.Warehouse;
 import com.zsxj.datareport2.network.RequestHelper;
 import com.zsxj.datareport2.ui.adapter.DateAdapter;
 import com.zsxj.datareport2.ui.adapter.DaySalesAdapter;
+import com.zsxj.datareport2.ui.misc.EndlessScrollListener;
 import com.zsxj.datareport2.utils.DefaultPrefs_;
 import com.zsxj.datareport2.utils.Utils;
 
@@ -86,20 +87,20 @@ public class DaySalesFragment extends BaseFragment {
 
 		initRequest();
 
-//		mDaySalesList.setOnScrollListener(new EndlessScrollListener(mDateList) {
-//			@Override
-//			public void onLoadMore() {
-//				if (mResult.stat_sales_sell_list.size() < mResult.total_count) {
-//					int pageNo = mResult.stat_sales_sell_list.size() / RequestHelper.CURRENT_PAGE_SIZE;
-//					String startDate = mStartDateButton.getText().toString();
-//					String endDate = mEndDateButton.getText().toString();
-//					mRequestHelper.queryDaySales(startDate, endDate, pageNo);
-//					showProgress(true);
-//				}
-//			}
-//		});
-		mDateList.setOnScrollListener(scroll2);
-		mDaySalesList.setOnScrollListener(scroll1);
+		mDaySalesList.setOnScrollListener(new EndlessScrollListener(mDateList) {
+			@Override
+			public void onLoadMore() {
+				if (mResult.stat_sales_sell_list.size() < mResult.total_count) {
+					int pageNo = mResult.stat_sales_sell_list.size() / RequestHelper.CURRENT_PAGE_SIZE;
+					String startDate = mStartDateButton.getText().toString();
+					String endDate = mEndDateButton.getText().toString();
+					mRequestHelper.queryDaySales(startDate, endDate, pageNo);
+					showProgress(true);
+				}
+			}
+		});
+//		mDateList.setOnScrollListener(scroll2);
+//		mDaySalesList.setOnScrollListener(scroll1);
 	}
 
 	AbsListView.OnScrollListener scroll1 = new AbsListView.OnScrollListener() {
