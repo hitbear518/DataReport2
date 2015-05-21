@@ -37,7 +37,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	@Override
 	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		LocalDate localDate = new LocalDate(year, monthOfYear + 1, dayOfMonth);
-		mEvent.date = localDate.toString(Utils.DATE_PATTERN);
+		mEvent.date = localDate.toString(Utils.DAY_PATTERN);
 		EventBus.getDefault().post(mEvent);
 	}
 }

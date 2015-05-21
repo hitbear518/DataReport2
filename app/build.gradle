@@ -35,6 +35,9 @@ repositories {
     maven {
         url "http://JRAF.org/static/maven/2"
     }
+    maven {
+        url "https://repo.commonsware.com.s3.amazonaws.com"
+    }
 }
 
 dependencies {

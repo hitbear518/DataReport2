@@ -169,9 +169,11 @@ public class Utils {
 		return gson.fromJson(json, new ListOfJson<T>(clazz));
 	}
 
-	public static final String DATE_PATTERN = "YY-MM-dd";
+	public static final String DAY_PATTERN = "YY-MM-dd";
+	public static final DateTimeFormatter DAY_FORMATTER = DateTimeFormat.forPattern(DAY_PATTERN);
 
-	public static final DateTimeFormatter FORMATTER = DateTimeFormat.forPattern(DATE_PATTERN);
+	public static final String MONTH_PATTERN = "YY-MM";
+	public static final DateTimeFormatter MONTH_FORMATTER = DateTimeFormat.forPattern(MONTH_PATTERN);
 
 	public static String removeTrailingZeros(String s) {
 		return !s.contains(".") ? s :s.replaceAll("0*$", "").replaceAll("\\.$", "");

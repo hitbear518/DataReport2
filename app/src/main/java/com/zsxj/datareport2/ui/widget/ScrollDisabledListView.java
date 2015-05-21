@@ -10,8 +10,6 @@ import android.widget.ListView;
  */
 public class ScrollDisabledListView extends ListView {
 
-	private int mPosition;
-
 	public ScrollDisabledListView(Context context) {
 		super(context);
 	}
@@ -27,28 +25,15 @@ public class ScrollDisabledListView extends ListView {
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 		final int actionMasked = ev.getActionMasked() & MotionEvent.ACTION_MASK;
-
 		if (actionMasked == MotionEvent.ACTION_DOWN) {
-//			mPosition = pointToPosition((int) ev.getX(), (int) ev.getY());
-//			return super.dispatchTouchEvent(ev);
 			return true;
 		}
-
 		if (actionMasked == MotionEvent.ACTION_MOVE) {
 			return true;
 		}
-
 		if (actionMasked == MotionEvent.ACTION_UP) {
-//			if (pointToPosition((int) ev.getX(), (int) ev.getY()) == mPosition) {
-//				super.dispatchTouchEvent(ev);
-//			} else {
-//				setPressed(false);
-//				invalidate();
-//				return true;
-//			}
 			return true;
 		}
-
 		return super.dispatchTouchEvent(ev);
 	}
 }

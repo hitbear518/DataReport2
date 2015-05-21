@@ -1,20 +1,24 @@
 package com.zsxj.datareport2.ui.misc;
 
 import android.widget.AbsListView;
+import android.widget.ListView;
+
+import com.zsxj.datareport2.model.HttpResult;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by sen on 15-5-20.
  */
 public abstract class EndlessScrollListener implements AbsListView.OnScrollListener {
 
-	private int mVisibleThreshold = 1;
+	private boolean mLoading = false;
 
-	private int mCurrentPage = 0;
+	private ListView mLeftSideView;
 
-	private boolean mLoading = true;
-
-	public EndlessScrollListener(int visibleThreshold) {
-		mVisibleThreshold = visibleThreshold;
+	public EndlessScrollListener(ListView leftSideView) {
+		mLeftSideView = leftSideView;
+		EventBus.getDefault().register(this);
 	}
 
 	@Override
@@ -23,11 +27,20 @@ public abstract class EndlessScrollListener implements AbsListView.OnScrollListe
 
 	@Override
 	public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-		if (!mLoading && (totalItemCount - visibleItemCount) <= mVisibleThreshold) {
-
+		if (totalItemCount > 0) {
+			mLeftSideView.post(() -> {
+				mLeftSideView.setSelectionFromTop(firstVisibleItem, view.getChildAt(0).getTop());
+			});
+			if (!mLoading && (totalItemCount - visibleItemCount - firstVisibleItem) <= 1) {
+				onLoadMore();
+				mLoading = true;
+			}
 		}
 	}
 
-	public abstract void onLoadMore(int page, int totalItemCount);
+	public abstract void onLoadMore();
+
+	public void onEvent(HttpResult result) {
+		mLoading = false;
+	}
 }

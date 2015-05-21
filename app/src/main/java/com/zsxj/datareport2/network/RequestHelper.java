@@ -1,12 +1,11 @@
 package com.zsxj.datareport2.network;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.orhanobut.logger.Logger;
 import com.zsxj.datareport2.model.DaySalesResult;
 import com.zsxj.datareport2.model.LicenseResult;
 import com.zsxj.datareport2.model.LoginResult;
 import com.zsxj.datareport2.model.MonthSaleResult;
+import com.zsxj.datareport2.model.Shop;
 import com.zsxj.datareport2.model.Warehouse;
 import com.zsxj.datareport2.model.WarehouseResult;
 import com.zsxj.datareport2.utils.DefaultPrefs_;
@@ -64,15 +63,20 @@ public class RequestHelper {
     }
 
     public void queryDaySales(String startDate, String endDate, int pageNo) {
-        String warehousesStr = mDefaultPrefs.warehouses().get();
-        Gson gson = new Gson();
-        List<Warehouse> warehouses = gson.fromJson(warehousesStr, new TypeToken<List<Warehouse>>() {
-		}.getType());
-		List<String> nos = StreamSupport.stream(warehouses).filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.name).collect(Collectors.toList());
         Map<String, String> params = new HashMap<>();
         params.put(PdaInterface.START_TIME, startDate);
         params.put(PdaInterface.END_TIME, endDate);
-        params.put(PdaInterface.WAREHOUSE_NO_LIST, Utils.toJson(nos));
+
+        String warehousesStr = mDefaultPrefs.warehouses().get();
+        List<Warehouse> warehouses = Utils.toList(warehousesStr, Warehouse.class);
+        List<String> warehouseNos = StreamSupport.stream(warehouses).filter(warehouse -> warehouse.checked).map(warehouse -> warehouse.warehouseNo).collect(Collectors.toList());
+        params.put(PdaInterface.WAREHOUSE_NO_LIST, Utils.toJson(warehouseNos));
+
+        String shopsStr = mDefaultPrefs.shops().get();
+        List<Shop> shops = Utils.toList(shopsStr, Shop.class);
+        List<String> shopNos = StreamSupport.stream(shops).filter(shop -> shop.checked).map(shop -> shop.shop_no).collect(Collectors.toList());
+        params.put(PdaInterface.SHOP_NO_LIST, Utils.toJson(shopNos));
+
 		params.put(PdaInterface.PAGE_NO, String.valueOf(pageNo));
 		params.put(PdaInterface.PAGE_SIZE, String.valueOf(CURRENT_PAGE_SIZE));
         HttpCallback<DaySalesResult> httpCallback = new HttpCallback<>();

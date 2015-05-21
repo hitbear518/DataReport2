@@ -24,8 +24,8 @@ public interface PdaInterface {
 	public static final String SIGN = "sign";
 	public static final String START_TIME= "start_time";
 	public static final String END_TIME = "end_time";
-	public static final String WAREHOUSES = "warehouses";
 	public static final String WAREHOUSE_NO_LIST = "warehouse_no_list";
+	public static final String SHOP_NO_LIST = "shop_no_list";
 	public static final String PAGE_NO = "page_no";
 	public static final String PAGE_SIZE = "page_size";
 
